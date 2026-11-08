@@ -1,0 +1,62 @@
+[
+  {
+    "id": "s1",
+    "name": "Sport Grille",
+    "category": "Exterior",
+    "price": 189,
+    "models": "3 Series, M3",
+    "stock": 8,
+    "description": "Demo listing. Confirm the correct OEM part number before purchase.",
+    "image": ""
+  },
+  {
+    "id": "s2",
+    "name": "Performance Brake Rotor",
+    "category": "Brakes",
+    "price": 249,
+    "models": "M3, M4",
+    "stock": 4,
+    "description": "Example product; fitment not verified.",
+    "image": ""
+  },
+  {
+    "id": "s3",
+    "name": "LED Headlight Assembly",
+    "category": "Lighting",
+    "price": 699,
+    "models": "5 Series",
+    "stock": 2,
+    "description": "Example product; fitment not verified.",
+    "image": ""
+  },
+  {
+    "id": "s4",
+    "name": "Alloy Wheel",
+    "category": "Wheels",
+    "price": 479,
+    "models": "X3, X5",
+    "stock": 6,
+    "description": "Example product; fitment not verified.",
+    "image": ""
+  },
+  {
+    "id": "s5",
+    "name": "Interior Trim Set",
+    "category": "Interior",
+    "price": 129,
+    "models": "4 Series",
+    "stock": 10,
+    "description": "Example product; fitment not verified.",
+    "image": ""
+  },
+  {
+    "id": "s6",
+    "name": "Oil Filter Kit",
+    "category": "Engine",
+    "price": 39,
+    "models": "Various models",
+    "stock": 20,
+    "description": "Example product; fitment not verified.",
+    "image": ""
+  }
+]
