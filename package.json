@@ -1,15 +1,18 @@
 {
-  "name": "bmw-parts-world",
-  "version": "1.0.0",
-  "description": "Independent BMW parts catalog — Node.js server with product API, image uploads and password-protected admin.",
-  "main": "server.js",
+  "name": "bmw-parts-secure",
+  "version": "2.0.0",
   "private": true,
+  "description": "Parts catalog storefront + admin, refactored for security (zero runtime dependencies).",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.13"
+  },
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
-  },
-  "engines": {
-    "node": ">=18"
+    "dev": "node --watch server.js",
+    "test": "node --test",
+    "create-admin": "node scripts/create-admin.js",
+    "migrate-json": "node scripts/migrate-json.js"
   },
   "license": "UNLICENSED"
 }

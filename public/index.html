@@ -1,159 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>BMW Parts World | Independent Parts Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BMW Parts World</title>
   <link rel="stylesheet" href="/styles.css">
   <script src="/app.js" defer></script>
 </head>
 <body>
-<header>
-  <div class="brand"><span class="brand-mark">B</span> BMW <b>PARTS</b><small>INDEPENDENT PARTS BOUTIQUE</small></div>
-  <nav>
-    <select id="lang" aria-label="Language">
-      <option value="en">English</option>
-      <option value="tr">Türkçe</option>
-      <option value="ru">Русский</option>
-    </select>
-    <button class="secondary" id="shopBtn">Store</button>
-    <button class="secondary hidden" id="logoutBtn">Log out</button>
-  </nav>
-</header>
-
-<main>
-  <!-- ================= STORE ================= -->
-  <section id="shop">
-    <div class="announcement">PREMIUM PARTS FOR EVERY DRIVE <span>✦</span> EXPLORE THE COLLECTION</div>
-    <div class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow" id="eyebrow">INDEPENDENT BMW PARTS CATALOG</div>
-        <h1 id="heroTitle">Built for the <span>drive.</span></h1>
-        <p id="heroDesc">Explore performance, exterior, interior and maintenance parts. Browse parts and check compatibility before ordering.</p>
-        <div class="stats">
-          <div><strong id="count">0</strong><small id="countLabel">Products listed</small></div>
-          <div><strong>USD</strong><small>Price currency</small></div>
-          <div><strong>Worldwide</strong><small>Shipping goal*</small></div>
-        </div>
-      </div>
-      <div class="hero-art">
-        <div class="hero-ring"></div>
-        <div class="hero-art-inner">
-          <span>BMW</span>
-          <strong>DRIVE<br>YOUR<br>VISION.</strong>
-          <small>THE PARTS COLLECTION / 2026</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-heading">
-      <div>
-        <div class="eyebrow">CURATED FOR YOUR BMW</div>
-        <h2 id="catalogTitle">Explore Parts</h2>
-      </div>
-      <span class="section-side">Quality starts with the right fit.</span>
-    </div>
-
-    <div class="category-chips">
-      <button class="chip active" data-cat="">All parts</button>
-      <button class="chip" data-cat="Exterior">Exterior</button>
-      <button class="chip" data-cat="Engine">Engine</button>
-      <button class="chip" data-cat="Interior">Interior</button>
-      <button class="chip" data-cat="Wheels">Wheels</button>
-      <button class="chip" data-cat="Lighting">Lighting</button>
-      <button class="chip" data-cat="Brakes">Brakes</button>
-      <button class="chip" data-cat="Accessories">Accessories</button>
-    </div>
-
-    <div class="toolbar">
-      <input id="search" type="search" placeholder="Search products or BMW models...">
-      <select id="category">
-        <option value="">All categories</option>
-        <option>Engine</option><option>Exterior</option><option>Interior</option><option>Wheels</option>
-        <option>Lighting</option><option>Brakes</option><option>Accessories</option>
-      </select>
-      <select id="sort">
-        <option value="default">Newest first</option>
-        <option value="asc">Price: low to high</option>
-        <option value="desc">Price: high to low</option>
-      </select>
-    </div>
-
-    <div id="products" class="grid"><p class="muted">Loading products…</p></div>
-    <div class="notice" id="storeNotice">Demo catalog: product details and prices are examples, not verified genuine BMW inventory. Checkout is not connected. This site is independent and not affiliated with BMW AG.</div>
-  </section>
-
-  <!-- ================= ADMIN ================= -->
-  <section id="admin">
-    <div class="hero">
-      <div class="eyebrow">STORE MANAGEMENT</div>
-      <h1>Admin <span>Panel.</span></h1>
-      <p>Add, edit and remove products and upload real pictures from your device.</p>
-    </div>
-
-    <!-- Login -->
-    <div class="panel narrow" id="loginPanel">
-      <h2>Admin login</h2>
-      <form id="loginForm">
-        <div class="formgrid">
-          <label>Password<input id="password" type="password" required autocomplete="current-password"></label>
-        </div>
-        <div class="actions"><button type="submit">Log in</button></div>
-      </form>
-    </div>
-
-    <!-- Manager -->
-    <div id="adminPanel" class="hidden">
-      <div class="notice">Changes are saved on the server and visible to every visitor. Checkout and order processing are not connected yet.</div>
-      <div class="panel">
-        <h2 id="formTitle">Add a product</h2>
-        <form id="productForm">
-          <div class="formgrid">
-            <label>Product name<input id="name" required maxlength="90" placeholder="M Performance Grille"></label>
-            <label>Price (USD)<input id="price" type="number" min="0" max="1000000" step="0.01" required placeholder="199.99"></label>
-            <label>Category
-              <select id="editCategory">
-                <option>Engine</option><option>Exterior</option><option>Interior</option><option>Wheels</option>
-                <option>Lighting</option><option>Brakes</option><option>Accessories</option>
-              </select>
-            </label>
-            <label>Compatible BMW models<input id="models" maxlength="200" placeholder="M3, M4, 3 Series"></label>
-            <label>Stock quantity<input id="stock" type="number" min="0" max="100000" step="1" value="1" required></label>
-            <label>Product picture<input id="picture" type="file" accept="image/png,image/jpeg,image/webp"></label>
-          </div>
-          <label class="checkbox hidden" id="removeImageWrap"><input type="checkbox" id="removeImage"> Remove current picture</label>
-          <label class="full">Description<textarea id="description" rows="3" maxlength="2000" placeholder="Describe the part and compatibility"></textarea></label>
-          <div class="actions">
-            <button type="submit" id="save">Save product</button>
-            <button type="button" class="secondary" id="cancel">Cancel editing</button>
-          </div>
-        </form>
-      </div>
-      <div class="panel">
-        <h2>Manage products (<span id="adminCount">0</span>)</h2>
-        <div id="adminList"></div>
-      </div>
-      <div class="panel">
-        <h2>Orders</h2>
-        <p>Online checkout is not configured. There are no real orders to manage yet.</p>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>Independent BMW parts catalog demo · Not affiliated with or endorsed by BMW AG · Verify compatibility and authenticity before ordering.</footer>
-
-<dialog id="details">
-  <div class="dialog-body">
-    <div class="category" id="dCategory"></div>
-    <h3 id="dName"></h3>
-    <p id="dDesc"></p>
-    <p class="muted" id="dModels"></p>
-    <p class="muted">Demo only — ordering is not enabled.</p>
-    <form method="dialog"><button>Close</button></form>
-  </div>
-</dialog>
-
-<div id="message" role="status"></div>
+  <header class="bar">
+    <h1>BMW Parts World</h1>
+    <form id="search" role="search">
+      <input id="q" name="q" type="search" maxlength="100" placeholder="Search parts, SKU, category" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+  </header>
+  <main>
+    <p id="status" aria-live="polite"></p>
+    <ul id="grid" class="grid"></ul>
+  </main>
+  <template id="card">
+    <li class="card">
+      <img alt="" loading="lazy" width="320" height="240">
+      <h2 class="name"></h2>
+      <p class="sku"></p>
+      <p class="desc"></p>
+      <p class="price"></p>
+    </li>
+  </template>
 </body>
 </html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · BMW Parts World</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/login.js" defer></script>
+</head>
+<body>
+  <section class="login">
+    <h1>Admin sign in</h1>
+    <form id="login">
+      <label for="username">Username</label>
+      <input id="username" name="username" autocomplete="username" required maxlength="64">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256">
+      <p id="error" class="error" role="alert"></p>
+      <button type="submit">Sign in</button>
+    </form>
+  </section>
+</body>
+</html>

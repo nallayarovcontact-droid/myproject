@@ -1,60 +1,61 @@
-# BMW Parts World (Node.js)
+# BMW Parts World: secured refactor
 
-Independent BMW parts catalog with a Node.js backend. There are **no dependencies**: it uses only Node's built-in modules, so you don't need to run `npm install`.
+The storefront, admin and API from the original diagram, rebuilt to fix the audit findings.
+It has **zero runtime dependencies** and needs Node ≥ 22.13 (`node:sqlite` is built in).
 
-## Run it
+- What was fixed and why: [`docs/SECURITY-REVIEW.md`](docs/SECURITY-REVIEW.md)
+- Where the audit prompt was wrong or incomplete: [`docs/PROMPT-REVIEW.md`](docs/PROMPT-REVIEW.md)
+
+## Quick start
 
 ```bash
-# Node 18 or newer
-ADMIN_PASSWORD="choose-a-strong-password" npm start
+cp .env.example .env            # optional; defaults work for local dev
+ADMIN_PASSWORD='choose-a-long-passphrase' npm run create-admin -- admin
+npm run migrate-json -- ../old-site/products.json ../old-site/uploads   # import the old catalog + photos
+npm start                        # http://127.0.0.1:3000  ·  admin at /admin/
+npm test                         # 15 security tests
 ```
 
-- Store: http://localhost:3000
-- Admin: http://localhost:3000/admin
+Node prints an `ExperimentalWarning` for `node:sqlite`. That's expected.
 
-If `ADMIN_PASSWORD` isn't set, the server makes up a temporary password and prints it in the console when it starts.
-
-On Windows PowerShell:
-
-```powershell
-$env:ADMIN_PASSWORD="choose-a-strong-password"; npm start
-```
-
-## Settings (environment variables)
-
-| Variable         | Default   | Purpose                                              |
-|------------------|-----------|------------------------------------------------------|
-| `ADMIN_PASSWORD` | random    | Password for /admin                                  |
-| `PORT`           | `3000`    | Port to listen on                                    |
-| `HOST`           | `0.0.0.0` | Interface to bind                                    |
-| `DATA_DIR`       | `./data`  | Location of `products.json` and the `uploads/` folder |
-| `NODE_ENV`       | –         | Set `production` to mark the cookie `Secure` (HTTPS needed) |
-
-## Project structure
+## Layout
 
 ```
-server.js          HTTP server, REST API, auth, file storage
-public/index.html  Store + admin markup
-public/styles.css  Styles
-public/app.js      Front-end logic (talks to the API)
-data/              Created automatically: products.json + uploads/
+server.js                 start/stop only
+src/app.js                wiring, global middleware, error handler
+src/routes/index.js       every URL and its access rule (read this first)
+src/controllers/          auth, products, static files, media
+src/middleware/           auth/RBAC, headers, CORS, CSRF, rate limit, HTTPS redirect
+src/services/             sessions, password hashing, image uploads
+src/models/               SQL (parameterized)
+src/validation/           input schemas
+src/db/                   SQLite connection + migrations
+public/                   storefront + login page (public)
+admin-ui/                 admin UI (served only to admins at /admin/)
+storage/uploads/          uploaded images (NOT web-served; via /media/:id)
+data/                     app.db
+scripts/                  create-admin, migrate-json
 ```
 
 ## API
 
-| Method | Path                  | Auth  | Description                    |
-|--------|-----------------------|-------|--------------------------------|
-| GET    | `/api/products`       | –     | List products                  |
-| POST   | `/api/login`          | –     | `{ "password": "..." }`        |
-| POST   | `/api/logout`         | –     | End the session                |
-| GET    | `/api/session`        | –     | `{ authenticated: true/false }` |
-| POST   | `/api/products`       | admin | Create (optional `imageData`, as a data URL) |
-| PUT    | `/api/products/:id`   | admin | Update (`imageData` or `removeImage`) |
-| DELETE | `/api/products/:id`   | admin | Delete a product and its photo |
+| Method | Path | Access |
+|---|---|---|
+| GET | `/api/products?q=&limit=&offset=` | public |
+| GET | `/api/products/:id` | public |
+| POST | `/api/auth/login` · `/api/auth/logout` | public (rate-limited) |
+| GET | `/api/auth/me` | public |
+| GET/POST | `/api/admin/products` | admin |
+| PATCH/DELETE | `/api/admin/products/:id` | admin |
+| PUT | `/api/admin/products/:id/image` (raw image body) | admin |
+| GET | `/media/:uuid` | public |
 
-## Notes for going live
+## Production
 
-- Put it behind HTTPS (for example nginx, Caddy, Render or Railway) and set `NODE_ENV=production`.
-- Back up the `data/` folder. On hosts with temporary disks, point `DATA_DIR` at a persistent volume.
-- Sessions are kept in memory, so restarting the server logs the admin out.
-- Checkout and payments are not built yet.
+Run behind nginx or Caddy for TLS, with `NODE_ENV=production TRUST_PROXY=true`. Alternatively, set
+`TLS_KEY_FILE` / `TLS_CERT_FILE` to let Node terminate TLS. In production the server refuses to
+start without one of the two. Back up `data/` and `storage/uploads/`.
+
+### Moving to PostgreSQL later
+Only `src/db/` and `src/models/` touch SQL. Swap `node:sqlite` for `pg` there and convert the
+migration. The rest of the app doesn't change.

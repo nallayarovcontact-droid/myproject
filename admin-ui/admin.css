@@ -1,0 +1,11 @@
+main { display: grid; gap: 1.5rem; grid-template-columns: minmax(280px, 360px) 1fr; align-items: start; }
+@media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+.panel { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; overflow-x: auto; }
+.panel h2 { margin-top: 0; font-size: 1.1rem; }
+.stack { flex-direction: column; }
+.stack label { display: flex; flex-direction: column; gap: .25rem; font-size: .9rem; color: var(--muted); }
+.row { display: flex; gap: .5rem; }
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: .92rem; }
+th, td { text-align: left; padding: .5rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+td img { width: 56px; height: 42px; object-fit: cover; border-radius: 4px; }
+td .row button { padding: .3rem .6rem; font-size: .85rem; }
